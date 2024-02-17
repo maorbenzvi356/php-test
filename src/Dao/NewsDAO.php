@@ -8,7 +8,7 @@ use App\Model\News;
 use App\Utils\DB;
 use PDOException;
 
-class NewsDAO
+class NewsDAO implements DAOInterface
 {
     private DB $db;
 
@@ -27,7 +27,7 @@ class NewsDAO
      *
      * @return array An array of news items.
      */
-    public function listNews(): array
+    public function listAll(): array
     {
         $rows = $this->db->select("SELECT * FROM `news`");
 
@@ -46,9 +46,11 @@ class NewsDAO
     /**
      * add a record in news table
      */
-    public function addNews($title, $body): string|false
+    public function add($data): int|false
     {
         try {
+            $title = $data['title'];
+            $body = $data['body'];
             $sql = "INSERT INTO `news` (`title`, `body`, `created_at`) VALUE(:title, :body, :created_at)";
 
             return $this->db->executeUpdate($sql, [
@@ -57,7 +59,7 @@ class NewsDAO
                 ':created_at' => date('Y-m-d')
             ]);
         } catch (PDOException $e) {
-            $e->getMessage();
+            echo $e->getMessage();
             return false;
         }
     }
@@ -69,15 +71,16 @@ class NewsDAO
      * Risks: Deleting database entries can be dangerous. Therefore if something goes wrong, we want to make
      * sure that the entire transaction failed
      */
-    public function deleteNews($newsId): int|false
+    public function delete($id): int|false
     {
         $this->db->beginTransaction();
 
         try {
-            $this->deleteCommentsByNewsId($newsId);
+            $this->deleteCommentsByNewsId($id);
 
             $sql = "DELETE FROM `news` WHERE `id` = :id";
-            $result = $this->db->executeUpdate($sql, [':id' => $newsId]);
+            $result = $this->db->executeUpdate($sql, [':id' => $id]);
+            $this->deleteCommentsByNewsId($id);
             $this->db->commit();
 
             return $result;
@@ -89,11 +92,10 @@ class NewsDAO
         }
     }
 
-
     public function deleteCommentsByNewsId(int $id): void
     {
         $commentsDAO = new CommentDAO($this->db);
-        $comments = $commentsDAO->listComments();
+        $comments = $commentsDAO->listAll();
 
         $idsToDelete = [];
         foreach ($comments as $comment) {
@@ -103,7 +105,7 @@ class NewsDAO
         }
 
         foreach ($idsToDelete as $id) {
-            $commentsDAO->deleteComment($id);
+            $commentsDAO->delete($id);
         }
     }
 }

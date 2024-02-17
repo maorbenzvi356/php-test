@@ -17,14 +17,14 @@ $db = (new ConnectionFactory())->createConnection();
 $newsDAO = new NewsDAO($db);
 $commentDAO = new CommentDAO($db);
 
-foreach ($newsDAO->listNews() as $news) {
+foreach ($newsDAO->listAll() as $news) {
     echo("############ NEWS " . $news->getTitle() . " ############\n");
     echo($news->getBody() . "\n");
-    foreach ($commentDAO->listComments() as $comment) {
+    foreach ($commentDAO->listAll() as $comment) {
         if ($comment->getNewsId() == $news->getId()) {
             echo("Comment " . $comment->getId() . " : " . $comment->getBody() . "\n");
         }
     }
 }
 
-$c = $commentDAO->listComments();
+$c = $commentDAO->listAll();

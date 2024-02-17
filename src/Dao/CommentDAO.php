@@ -8,7 +8,7 @@ use App\Model\Comment;
 use App\Utils\DB;
 use PDOException;
 
-class CommentDAO
+class CommentDAO implements DAOInterface
 {
     private DB $db;
 
@@ -27,7 +27,7 @@ class CommentDAO
      *
      * @return array An array of comments.
      */
-    public function listComments(): array
+    public function listAll(): array
     {
         try {
             $comments = [];
@@ -48,18 +48,16 @@ class CommentDAO
         }
     }
 
-    public function addCommentForNews($body, $newsId): int|false {
-        try {
-            $sql = "INSERT INTO `comment` (`body`, `created_at`, `news_id`) VALUES (?, ?, ?)";
-
-            return $this->db->executeUpdate($sql, [$body, date('Y-m-d H:i:s'), $newsId]);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-            return false;
-        }
+    public function add($data): int|false
+    {
+        // Extract data specific to Comment, including newsId
+        $newsId = $data['newsId'];
+        $body = $data['body'];
+        $sql = "INSERT INTO `comment` (`body`, `created_at`, `news_id`) VALUES (?, ?, ?)";
+        return $this->db->executeUpdate($sql, [$body, date('Y-m-d H:i:s'), $newsId]);
     }
 
-    public function deleteComment($id): int|false
+    public function delete($id): int|false
     {
         try {
             $sql = "DELETE FROM `comment` WHERE `id`=" . $id;
