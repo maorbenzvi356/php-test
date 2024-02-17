@@ -6,6 +6,7 @@ namespace App\Dao;
 
 use App\Model\Comment;
 use App\Utils\DB;
+use PDOException;
 
 class CommentDAO
 {
@@ -28,29 +29,45 @@ class CommentDAO
      */
     public function listComments(): array
     {
-        $comments = [];
-        $rows = $this->db->select("SELECT * FROM `comment`");
+        try {
+            $comments = [];
+            $rows = $this->db->select("SELECT * FROM `comment`");
 
-        foreach ($rows as $row) {
-            $comment = new Comment();
-            $comments[] = $comment->setId($row['id'])
-                ->setBody($row['body'])
-                ->setCreatedAt($row['created_at'])
-                ->setNewsId($row['news_id']);
+            foreach ($rows as $row) {
+                $comment = new Comment();
+                $comments[] = $comment->setId($row['id'])
+                    ->setBody($row['body'])
+                    ->setCreatedAt($row['created_at'])
+                    ->setNewsId($row['news_id']);
+            }
+
+            return $comments;
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
+            return [];
         }
-
-        return $comments;
     }
 
-    public function addCommentForNews($body, $newsId): int
-    {
-        $sql = "INSERT INTO `comment` (`body`, `created_at`, `news_id`) VALUES (?, ?, ?)";
-        return $this->db->executeUpdate($sql, [$body, date('Y-m-d H:i:s'), $newsId]);
+    public function addCommentForNews($body, $newsId): int|false {
+        try {
+            $sql = "INSERT INTO `comment` (`body`, `created_at`, `news_id`) VALUES (?, ?, ?)";
+
+            return $this->db->executeUpdate($sql, [$body, date('Y-m-d H:i:s'), $newsId]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 
-    public function deleteComment($id): int
+    public function deleteComment($id): int|false
     {
-        $sql = "DELETE FROM `comment` WHERE `id`=" . $id;
-        return $this->db->executeUpdate($sql);
+        try {
+            $sql = "DELETE FROM `comment` WHERE `id`=" . $id;
+
+            return $this->db->executeUpdate($sql);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 }

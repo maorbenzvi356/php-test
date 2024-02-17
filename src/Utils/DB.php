@@ -31,6 +31,21 @@ class DB
         }
     }
 
+    public function beginTransaction()
+    {
+        $this->pdo->beginTransaction();
+    }
+
+    public function commit()
+    {
+        $this->pdo->commit();
+    }
+
+    public function rollBack()
+    {
+        $this->pdo->rollBack();
+    }
+
     public function select($sql, $params = []): array
     {
         $stmt = $this->pdo->prepare($sql);
@@ -39,11 +54,11 @@ class DB
     }
 
 
-    public function executeUpdate($sql, $params = []): int
+    public function executeUpdate($sql, $params = []): int|false
     {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
-        return $stmt->rowCount(); // Returns the number of affected rows
+        return $stmt->rowCount();
     }
 
 
