@@ -87,3 +87,13 @@ php index.php
 ```
 
 The output will be displayed in the terminal.
+
+### Code Standards
+
+To maintain high code quality and ensure adherence to PSR-12 standards, run the following command before deployment to check for any coding standards issues:
+
+```sh
+vendor/bin/phpcs --standard=PSR12 src
+```
+
+To test if this works and throws errors/warnings make a small change to a class, for example add a space after an opening curly bracket. This should case the command to complain
