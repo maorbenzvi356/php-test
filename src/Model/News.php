@@ -4,53 +4,56 @@ namespace App\Model;
 
 class News
 {
-	protected $id, $title, $body, $createdAt;
+    protected $id;
+    protected $title;
+    protected $body;
+    protected $createdAt;
 
-	public function setId($id)
-	{
-		$this->id = $id;
+    public function setId($id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function setTitle($title)
-	{
-		$this->title = $title;
+    public function setTitle($title)
+    {
+        $this->title = $title;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getTitle()
-	{
-		return $this->title;
-	}
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	public function setBody($body)
-	{
-		$this->body = $body;
+    public function setBody($body)
+    {
+        $this->body = $body;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getBody()
-	{
-		return $this->body;
-	}
+    public function getBody()
+    {
+        return $this->body;
+    }
 
-	public function setCreatedAt($createdAt)
-	{
-		$this->createdAt = $createdAt;
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getCreatedAt()
-	{
-		return $this->createdAt;
-	}
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
 }
