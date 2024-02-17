@@ -6,6 +6,7 @@ namespace App\Dao;
 
 use App\Model\News;
 use App\Utils\DB;
+use PDOException;
 
 class NewsDAO
 {
@@ -47,21 +48,55 @@ class NewsDAO
      */
     public function addNews($title, $body): string|false
     {
-        $sql = "INSERT INTO `news` (`title`, `body`, `created_at`) 
-                VALUES('" . $title . "','" . $body . "','" . date('Y-m-d') . "')";
-        $this->db->exec($sql);
-        return $this->db->lastInsertId($sql);
+        try {
+            $sql = "INSERT INTO `news` (`title`, `body`, `created_at`) VALUE(:title, :body, :created_at)";
+
+            return $this->db->executeUpdate($sql, [
+                ':title' => $title,
+                ':body' => $body,
+                ':created_at' => date('Y-m-d')
+            ]);
+        } catch (PDOException $e) {
+            $e->getMessage();
+            return false;
+        }
     }
 
     /**
      * deletes a news, and also linked comments
+     * We add a transaction to make sure that we cana rollback incase we encounter an error.
+     * This way the attempted changes will get discarded
+     * Risks: Deleting database entries can be dangerous. Therefore if something goes wrong, we want to make
+     * sure that the entire transaction failed
      */
-    public function deleteNews($id): int
+    public function deleteNews($newsId): int|false
+    {
+        $this->db->beginTransaction();
+
+        try {
+            $this->deleteCommentsByNewsId($newsId);
+
+            $sql = "DELETE FROM `news` WHERE `id` = :id";
+            $result = $this->db->executeUpdate($sql, [':id' => $newsId]);
+            $this->db->commit();
+
+            return $result;
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            $this->db->rollBack();
+
+            return false;
+        }
+    }
+
+
+    public function deleteCommentsByNewsId(int $id): void
     {
         $commentsDAO = new CommentDAO($this->db);
-        $idsToDelete = [];
+        $comments = $commentsDAO->listComments();
 
-        foreach ($commentsDAO as $comment) {
+        $idsToDelete = [];
+        foreach ($comments as $comment) {
             if ($comment->getNewsId() == $id) {
                 $idsToDelete[] = $comment->getId();
             }
@@ -70,8 +105,5 @@ class NewsDAO
         foreach ($idsToDelete as $id) {
             $commentsDAO->deleteComment($id);
         }
-
-        $sql = "DELETE FROM `news` WHERE `id`=" . $id;
-        return $this->db->executeUpdate($sql);
     }
 }
