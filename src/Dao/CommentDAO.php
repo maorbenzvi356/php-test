@@ -14,7 +14,8 @@ class CommentDAO
      *
      * @param DB $db The DB instance to use for database operations.
      */
-    public function __construct(DB $db) {
+    public function __construct(DB $db)
+    {
         $this->db = $db;
     }
 
@@ -23,11 +24,12 @@ class CommentDAO
      *
      * @return array An array of comments.
      */
-    public function listComments() {
+    public function listComments()
+    {
         $comments = [];
         $rows = $this->db->select("SELECT * FROM `comment`");
 
-        foreach($rows as $row) {
+        foreach ($rows as $row) {
             $n = new Comment();
             $comments[] = $n->setId($row['id'])
                 ->setBody($row['body'])
