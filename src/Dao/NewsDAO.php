@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Dao;
 
 use App\Model\News;
@@ -7,7 +9,7 @@ use App\Utils\DB;
 
 class NewsDAO
 {
-    private $db;
+    private DB $db;
 
     /**
      * Constructs a NewsDAO with a DB connection.
@@ -24,26 +26,26 @@ class NewsDAO
      *
      * @return array An array of news items.
      */
-    public function listNews()
+    public function listNews(): array
     {
         $rows = $this->db->select("SELECT * FROM `news`");
 
-        $news = [];
+        $newsList = [];
         foreach ($rows as $row) {
-            $n = new News();
-            $news[] = $n->setId($row['id'])
+            $news = new News();
+            $newsList[] = $news->setId($row['id'])
                 ->setTitle($row['title'])
                 ->setBody($row['body'])
                 ->setCreatedAt($row['created_at']);
         }
 
-        return $news;
+        return $newsList;
     }
 
     /**
      * add a record in news table
      */
-    public function addNews($title, $body)
+    public function addNews($title, $body): string|false
     {
         $sql = "INSERT INTO `news` (`title`, `body`, `created_at`) 
                 VALUES('" . $title . "','" . $body . "','" . date('Y-m-d') . "')";
@@ -54,7 +56,7 @@ class NewsDAO
     /**
      * deletes a news, and also linked comments
      */
-    public function deleteNews($id)
+    public function deleteNews($id): int
     {
         $commentsDAO = new CommentDAO($this->db);
         $idsToDelete = [];
@@ -70,6 +72,6 @@ class NewsDAO
         }
 
         $sql = "DELETE FROM `news` WHERE `id`=" . $id;
-        return $this->db->exec($sql);
+        return $this->db->executeUpdate($sql);
     }
 }

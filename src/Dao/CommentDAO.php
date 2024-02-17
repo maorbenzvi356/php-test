@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Dao;
 
 use App\Model\Comment;
@@ -7,7 +9,7 @@ use App\Utils\DB;
 
 class CommentDAO
 {
-    private $db;
+    private DB $db;
 
     /**
      * Constructs a CommentDAO with a DB connection.
@@ -24,14 +26,14 @@ class CommentDAO
      *
      * @return array An array of comments.
      */
-    public function listComments()
+    public function listComments(): array
     {
         $comments = [];
         $rows = $this->db->select("SELECT * FROM `comment`");
 
         foreach ($rows as $row) {
-            $n = new Comment();
-            $comments[] = $n->setId($row['id'])
+            $comment = new Comment();
+            $comments[] = $comment->setId($row['id'])
                 ->setBody($row['body'])
                 ->setCreatedAt($row['created_at'])
                 ->setNewsId($row['news_id']);
@@ -40,15 +42,15 @@ class CommentDAO
         return $comments;
     }
 
-    public function addCommentForNews($body, $newsId)
+    public function addCommentForNews($body, $newsId): int
     {
         $sql = "INSERT INTO `comment` (`body`, `created_at`, `news_id`) VALUES (?, ?, ?)";
         return $this->db->executeUpdate($sql, [$body, date('Y-m-d H:i:s'), $newsId]);
     }
 
-    public function deleteComment($id)
+    public function deleteComment($id): int
     {
         $sql = "DELETE FROM `comment` WHERE `id`=" . $id;
-        return $this->db->exec($sql);
+        return $this->db->executeUpdate($sql);
     }
 }
