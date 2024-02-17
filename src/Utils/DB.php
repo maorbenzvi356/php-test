@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Utils;
 
 use PDO;
@@ -7,7 +9,7 @@ use PDOException;
 
 class DB
 {
-    private $pdo;
+    private PDO $pdo;
 
     /**
      * Constructor for the DB Model.
@@ -18,7 +20,7 @@ class DB
      * @param string $user The username for the DSN string.
      * @param string $password The password for the DSN string.
      */
-    public function __construct($dsn, $user, $password)
+    public function __construct(string $dsn, string $user, string $password)
     {
         try {
             $this->pdo = new PDO($dsn, $user, $password, [
@@ -29,7 +31,7 @@ class DB
         }
     }
 
-    public function select($sql, $params = [])
+    public function select($sql, $params = []): array
     {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
@@ -37,7 +39,7 @@ class DB
     }
 
 
-    public function executeUpdate($sql, $params = [])
+    public function executeUpdate($sql, $params = []): int
     {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
@@ -45,7 +47,7 @@ class DB
     }
 
 
-    public function lastInsertId()
+    public function lastInsertId(): string|false
     {
         return $this->pdo->lastInsertId();
     }
