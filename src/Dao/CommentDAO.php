@@ -1,6 +1,9 @@
 <?php
 
-require 'class/Comment.php';
+namespace App\Dao;
+
+use App\Model\Comment;
+use App\Utils\DB;
 
 class CommentDAO
 {

@@ -1,13 +1,18 @@
 <?php
 
+namespace App\Utils;
+
+use PDO;
+use PDOException;
+
 class DB
 {
 	private $pdo;
 
     /**
-     * Constructor for the DB class.
+     * Constructor for the DB Model.
      * Initializes a new PDO connection using the provided credentials.
-     * Previously an instantiate method was used, which is not the correct way to instantiate a class
+     * Previously an instantiate method was used, which is not the correct way to instantiate a Model
      *
      * @param string $dsn The Data Source Name, or DSN, containing the information required to connect to the database.
      * @param string $user The username for the DSN string.
