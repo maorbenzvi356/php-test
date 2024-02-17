@@ -6,10 +6,20 @@ class NewsDAO
 {
     private $db;
 
+    /**
+     * Constructs a NewsDAO with a DB connection.
+     *
+     * @param DB $db The DB instance to use for database operations.
+     */
     public function __construct(DB $db) {
         $this->db = $db;
     }
 
+    /**
+     * Retrieves all news from the database.
+     *
+     * @return array An array of news items.
+     */
     public function listNews()
     {
         $rows = $this->db->select("SELECT * FROM `news`");
