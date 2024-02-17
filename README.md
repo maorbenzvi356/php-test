@@ -97,3 +97,13 @@ vendor/bin/phpcs --standard=PSR12 src
 ```
 
 To test if this works and throws errors/warnings make a small change to a class, for example add a space after an opening curly bracket. This should case the command to complain
+
+## Running Tests
+
+To ensure the quality of the code, we use PHPUnit for unit testing. To run the tests, execute the following command:
+
+```sh
+./vendor/bin/phpunit tests
+```
+
+For the sake of time, I've just added tests for a single class.
