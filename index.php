@@ -1,18 +1,26 @@
 <?php
 
 define('ROOT', __DIR__);
-require_once(ROOT . '/utils/NewsManager.php');
-require_once(ROOT . '/utils/CommentManager.php');
+require_once(ROOT . '/utils/DB.php');
+require_once(ROOT . '/dao/NewsDAO.php');
+require_once(ROOT . '/dao/CommentDAO.php');
 
-foreach (NewsManager::getInstance()->listNews() as $news) {
+$dsn = 'mysql:host=127.0.0.1;dbname=optimyphptest';
+$user = 'root';
+$password = '';
+
+$db = new DB($dsn, $user, $password);
+$newsDAO = new NewsDAO($db);
+$commentDAO = new CommentDAO($db);
+
+foreach ($newsDAO->listNews() as $news) {
 	echo("############ NEWS " . $news->getTitle() . " ############\n");
 	echo($news->getBody() . "\n");
-	foreach (CommentManager::getInstance()->listComments() as $comment) {
+	foreach ($commentDAO->listComments() as $comment) {
 		if ($comment->getNewsId() == $news->getId()) {
 			echo("Comment " . $comment->getId() . " : " . $comment->getBody() . "\n");
 		}
 	}
 }
 
-$commentManager = CommentManager::getInstance();
-$c = $commentManager->listComments();
+$c = $commentDAO->listComments();
