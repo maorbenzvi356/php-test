@@ -30,8 +30,8 @@ class CommentDAO
         $rows = $this->db->select("SELECT * FROM `comment`");
 
         foreach ($rows as $row) {
-            $n = new Comment();
-            $comments[] = $n->setId($row['id'])
+            $comment = new Comment();
+            $comments[] = $comment->setId($row['id'])
                 ->setBody($row['body'])
                 ->setCreatedAt($row['created_at'])
                 ->setNewsId($row['news_id']);

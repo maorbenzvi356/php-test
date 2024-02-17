@@ -28,16 +28,16 @@ class NewsDAO
     {
         $rows = $this->db->select("SELECT * FROM `news`");
 
-        $news = [];
+        $newsList = [];
         foreach ($rows as $row) {
-            $n = new News();
-            $news[] = $n->setId($row['id'])
+            $news = new News();
+            $newsList[] = $news->setId($row['id'])
                 ->setTitle($row['title'])
                 ->setBody($row['body'])
                 ->setCreatedAt($row['created_at']);
         }
 
-        return $news;
+        return $newsList;
     }
 
     /**
