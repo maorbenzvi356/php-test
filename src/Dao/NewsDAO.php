@@ -1,6 +1,9 @@
 <?php
 
-require 'class/News.php';
+namespace App\Dao;
+
+use App\Model\News;
+use App\Utils\DB;
 
 class NewsDAO
 {
@@ -11,7 +14,8 @@ class NewsDAO
      *
      * @param DB $db The DB instance to use for database operations.
      */
-    public function __construct(DB $db) {
+    public function __construct(DB $db)
+    {
         $this->db = $db;
     }
 
@@ -41,7 +45,8 @@ class NewsDAO
      */
     public function addNews($title, $body)
     {
-        $sql = "INSERT INTO `news` (`title`, `body`, `created_at`) VALUES('". $title . "','" . $body . "','" . date('Y-m-d') . "')";
+        $sql = "INSERT INTO `news` (`title`, `body`, `created_at`) 
+                VALUES('" . $title . "','" . $body . "','" . date('Y-m-d') . "')";
         $this->db->exec($sql);
         return $this->db->lastInsertId($sql);
     }
@@ -60,7 +65,7 @@ class NewsDAO
             }
         }
 
-        foreach($idsToDelete as $id) {
+        foreach ($idsToDelete as $id) {
             $commentsDAO->deleteComment($id);
         }
 

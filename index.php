@@ -1,9 +1,10 @@
 <?php
 
+use App\Utils\DB;
+use App\Dao\NewsDAO;
+use App\Dao\CommentDAO;
 define('ROOT', __DIR__);
-require_once(ROOT . '/utils/DB.php');
-require_once(ROOT . '/dao/NewsDAO.php');
-require_once(ROOT . '/dao/CommentDAO.php');
+require __DIR__ . '/vendor/autoload.php';
 
 $dsn = 'mysql:host=127.0.0.1;dbname=optimyphptest';
 $user = 'root';
