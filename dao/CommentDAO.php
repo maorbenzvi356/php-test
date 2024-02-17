@@ -6,10 +6,20 @@ class CommentDAO
 {
     private $db;
 
+    /**
+     * Constructs a CommentDAO with a DB connection.
+     *
+     * @param DB $db The DB instance to use for database operations.
+     */
     public function __construct(DB $db) {
         $this->db = $db;
     }
 
+    /**
+     * Retrieves all comments from the database.
+     *
+     * @return array An array of comments.
+     */
     public function listComments() {
         $comments = [];
         $rows = $this->db->select("SELECT * FROM `comment`");
