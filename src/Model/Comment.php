@@ -4,52 +4,56 @@ namespace App\Model;
 
 class Comment
 {
-	protected $id, $body, $createdAt, $newsId;
+    protected $id;
+    protected $body;
+    protected $createdAt;
+    protected $newsId;
 
-	public function setId($id)
-	{
-		$this->id = $id;
+    public function setId($id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getId()
-	{
-		return $this->id;
-	}
-	public function setBody($body)
-	{
-		$this->body = $body;
+    public function getId()
+    {
+        return $this->id;
+    }
 
-		return $this;
-	}
+    public function setBody($body)
+    {
+        $this->body = $body;
 
-	public function getBody()
-	{
-		return $this->body;
-	}
+        return $this;
+    }
 
-	public function setCreatedAt($createdAt)
-	{
-		$this->createdAt = $createdAt;
+    public function getBody()
+    {
+        return $this->body;
+    }
 
-		return $this;
-	}
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
 
-	public function getCreatedAt()
-	{
-		return $this->createdAt;
-	}
+        return $this;
+    }
 
-	public function getNewsId()
-	{
-		return $this->newsId;
-	}
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
 
-	public function setNewsId($newsId)
-	{
-		$this->newsId = $newsId;
+    public function getNewsId()
+    {
+        return $this->newsId;
+    }
 
-		return $this;
-	}
+    public function setNewsId($newsId)
+    {
+        $this->newsId = $newsId;
+
+        return $this;
+    }
 }
