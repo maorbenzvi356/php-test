@@ -4,36 +4,26 @@ class DB
 {
 	private $pdo;
 
-	private static $instance = null;
-
-	private function __construct()
+	public function __construct($dsn, $user, $password)
 	{
-		$dsn = 'mysql:dbname=optimyphptest;host=127.0.0.1';
-		$user = 'root';
-		$password = '';
-
 		$this->pdo = new \PDO($dsn, $user, $password);
 	}
 
-	public static function getInstance()
-	{
-		if (null === self::$instance) {
-			$c = __CLASS__;
-			self::$instance = new $c;
-		}
-		return self::$instance;
-	}
+    public function select($sql, $params = [])
+    {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
 
-	public function select($sql)
-	{
-		$sth = $this->pdo->query($sql);
-		return $sth->fetchAll();
-	}
 
-	public function exec($sql)
-	{
-		return $this->pdo->exec($sql);
-	}
+    public function executeUpdate($sql, $params = [])
+    {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->rowCount(); // Returns the number of affected rows
+    }
+
 
 	public function lastInsertId()
 	{
