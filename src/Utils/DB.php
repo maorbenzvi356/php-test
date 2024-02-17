@@ -7,7 +7,7 @@ use PDOException;
 
 class DB
 {
-	private $pdo;
+    private $pdo;
 
     /**
      * Constructor for the DB Model.
@@ -18,16 +18,16 @@ class DB
      * @param string $user The username for the DSN string.
      * @param string $password The password for the DSN string.
      */
-	public function __construct($dsn, $user, $password)
-	{
-        try{
+    public function __construct($dsn, $user, $password)
+    {
+        try {
             $this->pdo = new PDO($dsn, $user, $password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Error handling strategy
             ]);
         } catch (PDOException $e) {
             die('Connection failed: ' . $e->getMessage());
         }
-	}
+    }
 
     public function select($sql, $params = [])
     {
@@ -45,8 +45,8 @@ class DB
     }
 
 
-	public function lastInsertId()
-	{
-		return $this->pdo->lastInsertId();
-	}
+    public function lastInsertId()
+    {
+        return $this->pdo->lastInsertId();
+    }
 }
