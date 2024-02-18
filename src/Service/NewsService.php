@@ -29,7 +29,9 @@ class NewsService
         }
 
         // Prepare simple list of newsIds given all available news
-        $newsIds = array_map(function ($news) { return $news->getId(); }, $newsList);
+        $newsIds = array_map(function ($news) {
+            return $news->getId();
+        }, $newsList);
 
         // Fetch comments for these news IDs
         $allComments = $this->commentDAO->listCommentsByNewsIds($newsIds);
@@ -63,10 +65,6 @@ class NewsService
             } else {
                 echo "No comments for this news item.\n";
             }
-
-            echo "\n"; // Add a newline for better readability between news items
         }
     }
 }
-
-

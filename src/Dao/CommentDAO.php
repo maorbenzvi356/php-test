@@ -100,7 +100,7 @@ class CommentDAO implements DAOInterface
                     ->setNewsId((int)$row['news_id']);
             }
 
-        return $comments;
+            return $comments;
         } catch (PDOException $e) {
             echo $e->getMessage();
             return [];
