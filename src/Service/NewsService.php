@@ -29,7 +29,9 @@ class NewsService
         }
 
         // Prepare simple list of newsIds given all available news
-        $newsIds = array_map(function ($news) { return $news->getId(); }, $newsList);
+        $newsIds = array_map(function ($news) {
+            return $news->getId();
+        }, $newsList);
 
         // Fetch comments for these news IDs
         $allComments = $this->commentDAO->listCommentsByNewsIds($newsIds);
@@ -66,5 +68,3 @@ class NewsService
         }
     }
 }
-
-
