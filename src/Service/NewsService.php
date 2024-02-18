@@ -63,8 +63,6 @@ class NewsService
             } else {
                 echo "No comments for this news item.\n";
             }
-
-            echo "\n"; // Add a newline for better readability between news items
         }
     }
 }
