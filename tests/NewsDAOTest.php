@@ -51,7 +51,8 @@ class NewsDAOTest extends TestCase
     public function testDeleteReturnsFalseOnError()
     {
         // Arrange
-        $this->dbMock->method('beginTransaction')->willReturn(null);
+        $this->dbMock->expects($this->once())
+            ->method('beginTransaction');
         $this->dbMock->method('executeUpdate')->will($this->throwException(new PDOException()));
         $this->dbMock->expects($this->once())->method('rollBack');
 
