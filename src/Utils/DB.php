@@ -31,17 +31,17 @@ class DB
         }
     }
 
-    public function beginTransaction()
+    public function beginTransaction(): void
     {
         $this->pdo->beginTransaction();
     }
 
-    public function commit()
+    public function commit(): void
     {
         $this->pdo->commit();
     }
 
-    public function rollBack()
+    public function rollBack(): void
     {
         $this->pdo->rollBack();
     }
